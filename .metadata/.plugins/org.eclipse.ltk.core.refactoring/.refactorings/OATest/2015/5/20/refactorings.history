@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;ua.org.oa.malahk.App.java&apos; to &apos;ChangeTest.java&apos;&#x0D;&#x0A;- Original project: &apos;OATest&apos;&#x0D;&#x0A;- Original element: &apos;ua.org.oa.malahk.App.java&apos;&#x0D;&#x0A;- Renamed element: &apos;ua.org.oa.malahk.ChangeTest.java&apos;" description="Rename compilation unit &apos;App.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;ua.org.oa.malahk{App.java" name="ChangeTest.java" references="false" stamp="1431440275293" version="1.0"/>
+</session>

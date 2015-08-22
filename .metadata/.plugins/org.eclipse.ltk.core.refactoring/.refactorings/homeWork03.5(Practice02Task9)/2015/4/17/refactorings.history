@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;ua.org.oa.malahk.Different&apos; to &apos;TemperatureInput&apos;&#x0D;&#x0A;- Original project: &apos;homeWork035&apos;&#x0D;&#x0A;- Original element: &apos;ua.org.oa.malahk.Different&apos;&#x0D;&#x0A;- Renamed element: &apos;ua.org.oa.malahk.TemperatureInput&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Rename similarly named elements&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Different&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;ua.org.oa.malahk{Different.java[Different" matchStrategy="1" name="TemperatureInput" qualified="false" references="true" similarDeclarations="true" stamp="1429710235713" textual="true" version="1.0"/>
+</session>

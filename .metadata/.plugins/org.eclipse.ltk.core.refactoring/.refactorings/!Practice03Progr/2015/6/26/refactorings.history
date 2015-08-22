@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;!Practice03Progr/src/ua/org/oracle/academy/malahk/SAD.java&apos; to &apos;StudentUtilsTests.java&apos;" description="Rename resource &apos;SAD.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/ua/org/oracle/academy/malahk/SAD.java" name="StudentUtilsTests.java" stamp="1434962342467" updateReferences="true"/>
+</session>

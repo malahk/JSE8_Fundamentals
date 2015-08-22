@@ -1,0 +1,182 @@
+package ua.oracle.academy;
+
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class MarkDownParser
+{
+	private static final String HTML_START 		= "<html>\n";
+	private static final String HTML_END 		= "</html>\n";
+	private static final String BODY_START 		= "<body>\n";
+	private static final String BODY_END 		= "</body>\n";
+	private static final String SIMPLE_START 	= "<p>";
+	private static final String SIMPLE_END 		= "</p>\n";
+	private static final String EMPHASI_START	= "<em>";
+	private static final String EMPHASI_END 	= "</em>";
+	private static final String STRONG_START 	= "<strong>";
+	private static final String STRONG_END 		= "</strong>";
+	private static final String TAB 			= "\t";
+	private static final String SHARP 			= "#";
+	private static final String EMPTY_STRING 	= "";
+
+	public MarkDownParser() {
+
+	}
+
+	public static String Parser(String s) {
+		String[] parsedArray = getParagraph(s);
+		for (int index = 0; index < parsedArray.length; ++index) {
+			s = createHeader(parsedArray[index]);
+			s = parseEmphasi2(s);
+			s = parseStrong(s);
+			s = parseURL(s);
+			parsedArray[index] = s;
+		} 
+		//System.out.println(Arrays.toString(parsedArray));
+		return Arrays.toString(parsedArray);
+
+	}
+
+	private static String[] getParagraph(String s) {
+		String[] parsedArray = s.split("\n");
+		String parsedStringTemp = EMPTY_STRING;
+		for (int i = 0; i < parsedArray.length; ++i) {
+			parsedStringTemp = parsedArray[i].concat(parsedArray[i].trim());
+		}
+
+		return parsedStringTemp.split("\n{2,}");
+		
+	}
+
+	public static String getHTMLStart(String s) {
+		String tempString = EMPTY_STRING;
+		tempString = tempString.concat(HTML_START).concat(BODY_START);
+		return tempString;
+
+	}
+
+	public static String getHTMLEnd(String s) {
+		String tempString = EMPTY_STRING;
+		tempString = tempString.concat(HTML_END).concat(BODY_END);
+		return tempString;
+
+	}
+
+	public static String createHeader(String s) {
+		String[] header = new String(s.substring(s.indexOf(SHARP),
+				s.lastIndexOf(SHARP) + 1)).split(EMPTY_STRING);
+		String parsedString = EMPTY_STRING;
+		parsedString = parsedString.concat("<h" + header.length + ">")
+				.concat(s = s.replaceAll(SHARP, EMPTY_STRING)).trim()
+				.concat("</h" + header.length + "> \n");
+		return parsedString;
+	}
+
+	public static String parseURL(String s) {
+		String[] parsedArray = s.split("\\)");
+		String textURL = EMPTY_STRING;
+		String url = EMPTY_STRING;
+		String subLine = EMPTY_STRING;
+		String result = EMPTY_STRING;
+		Integer startPosition;
+
+		for (int position1 = 0; position1 < parsedArray.length; ++position1) {
+			subLine = parsedArray[position1];
+			startPosition = 0;
+			if (parsedArray.length - 1 > position1
+					|| s.charAt(s.length() - 1) == ')') {
+				subLine += ")";
+			}
+
+			for (int position = 0; position < subLine.length(); ++position) {
+				if ('[' == subLine.charAt(position)) {
+					startPosition = position;
+					textURL = subLine.substring(subLine.indexOf('[') + 1,
+							subLine.indexOf(']'));
+				} else if ('(' == subLine.charAt(position)) {
+					startPosition = startPosition > 0 ? startPosition
+							: position;
+					url = subLine.substring(subLine.indexOf('(') + 1,
+							subLine.indexOf(')'));
+				} else {
+					continue;
+				}
+			}
+
+			result += subLine.substring(0, startPosition) + "<a href=\"" + url
+					+ "\">" + (textURL.isEmpty() ? url : textURL) + "</a>";
+		}
+
+		return TAB + SIMPLE_START + result + SIMPLE_END;
+
+	}
+
+	public static String parseEmphasi(String s) {
+		String emphasiText = EMPTY_STRING;
+		Integer lastEntry = 0;
+		for (int position = 0; position < s.length(); ++position) {
+			if ('*' == s.charAt(position)) {
+				emphasiText = s.substring(position + 1);
+				emphasiText = emphasiText
+						.substring(0, emphasiText.indexOf('*'));
+				position += emphasiText.length() + 1;
+			} else
+				continue;
+		}
+
+		return TAB + SIMPLE_START + EMPHASI_START + emphasiText + EMPHASI_END
+				+ SIMPLE_END;
+	}
+
+	public static String parseEmphasi2(String s) {
+		String emphasiText = EMPTY_STRING;
+		Integer endPosition = -1;
+		Integer startPosition = 0;
+
+		while ((startPosition = s.substring(endPosition + 1).indexOf('*')) >= 0) {
+			startPosition += endPosition + 1;
+			if ((endPosition = s.substring(startPosition + 1).indexOf('*')) == -1) {
+				break;
+			}
+			endPosition += startPosition + 1;
+			emphasiText = s.substring(0, startPosition).concat(EMPHASI_START)
+					+ s.substring(startPosition + 1, endPosition).concat(
+							EMPHASI_END) + s.substring(endPosition + 1);
+
+		}
+
+		return TAB + SIMPLE_START + emphasiText + SIMPLE_END;
+	}
+
+	public static String parseStrong(String s) {
+		String strongText = EMPTY_STRING;
+		Integer startPosition = 0;
+		Integer endPosition = -2;
+		while ((startPosition = parseStrong1(s.substring(endPosition + 2))) > -1) {
+			startPosition += endPosition + 2;
+			if ((endPosition = parseStrong1(s.substring(startPosition + 2))) == -1) {
+				break;
+			}
+			endPosition += startPosition + 2;
+			strongText = s.substring(0, startPosition).concat(STRONG_START)
+					+ s.substring(startPosition + 2, endPosition).concat(
+							STRONG_END) + s.substring(endPosition + 2);
+		}
+		
+		return SIMPLE_START + strongText + SIMPLE_END;
+	}
+
+	public static Integer parseStrong1(String s) {
+		Integer startPosition = s.indexOf('*');
+		char secondAsterix = '*';
+		while (startPosition != -1) {
+			if (s.charAt(startPosition + 1) == secondAsterix) {
+				return startPosition;
+			}
+		}
+		
+		return -1;
+	}
+
+}

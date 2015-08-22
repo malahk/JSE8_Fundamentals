@@ -1,0 +1,17 @@
+package ua.oracle.academy;
+
+public class MarkDownParser {
+	
+	public MarkDownParser() 
+	{
+		private static final String HTML_START = "<html> \n";
+		 private static final String HTML_END = "</html> \n";
+		
+	}
+
+	public static void Parser (String s) {
+		
+		String[] parseArray = s.split("\n");
+		
+	}
+}

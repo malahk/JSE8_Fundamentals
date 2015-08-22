@@ -1,0 +1,50 @@
+package ua.oracle.academy;
+
+public class MarkDownParser {
+
+	private static final String HTML_START = "<html> \n";
+	private static final String HTML_END = "</html> \n";
+	private static final String BODY_START = "<body> \n";
+	private static final String BODY_END = "</body> \n";
+	private static final String HEADER_START = "<h2> \n";
+	private static final String HEADER_END = "</h2> \n";
+	private static final String SIMPLE_START = "<p> \n";
+	private static final String SIMPLE_END = "</p> \n";
+	private static final String EMPHASI_START = "<em> \n";
+	private static final String EMPHASI_END = "</em> \n";
+	private static final String STRONG_START = "<strong> \n";
+	private static final String STRONG_END = "</strong> \n";
+	private static final String TAB = "\t";
+	private static final String SHARP = "#";
+	private static final String EMPTY_STRING = "";
+
+	public MarkDownParser() {
+
+	}
+
+	public static void Parser(String s) {
+
+		String[] parsedArray = s.split("\n");
+		String parsedString = EMPTY_STRING;
+		parsedString = parsedString.concat(HTML_START).concat(BODY_START);
+		for (int i = 0; i < parsedArray.length; ++i) {
+			if (parsedArray[i].startsWith(SHARP)) {
+				parsedString = parsedString.concat(TAB).concat(
+						createHeader(parsedArray[i]));
+			}
+		}
+
+	}
+
+	private static String createHeader(String s) {
+
+		String[] header = new String(s.substring(s.indexOf(SHARP),
+				s.lastIndexOf(SHARP) + 1)).split(EMPTY_STRING);
+		parsedString = EMPTY_STRING;
+		parsedString = parsedString.concat("<h" + header.length + ">")
+				.concat(s = s.replaceAll(SHARP, EMPTY_STRING)).trim()
+				.concat("</h" + header.length + "> \n");
+		return parsedString;
+
+	}
+}
